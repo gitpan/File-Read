@@ -1,0 +1,14 @@
+---
+name: File-Read
+version: 0.01
+author:
+  - 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>'
+abstract: Unique interface for reading one or more files
+license: perl
+build_requires:
+  Test::More: 0
+provides:
+  File::Read:
+    file: lib/File/Read.pm
+    version: 0.01
+generated_by: Module::Build version 0.2611
