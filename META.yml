@@ -1,6 +1,6 @@
 ---
 name: File-Read
-version: 0.01
+version: 0.02
 author:
   - 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>'
 abstract: Unique interface for reading one or more files
@@ -10,5 +10,5 @@ build_requires:
 provides:
   File::Read:
     file: lib/File/Read.pm
-    version: 0.01
+    version: 0.02
 generated_by: Module::Build version 0.2611

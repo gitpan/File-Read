@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.01';
+    $VERSION = '0.02';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =head1 SYNOPSIS
 
@@ -58,7 +58,9 @@ set C<read_file()>'s C<err_mode> option default value to C<"quiet">.
 
 =item B<read_file()>
 
-Read the files given in argument and return their content. 
+Read the files given in argument and return their content, 
+as as list, one element per file, when called in list context, 
+or as one big chunk of text when called in scalar context. 
 Options can be set using a hashref as first parameter.
 
 B<Options>
@@ -67,10 +69,10 @@ B<Options>
 
 =item *
 
-C<aggregate> controls how the functions returns the content of the files 
-that was successfully read. By default, its behaviour depends on the 
-Perl context (list or scalar). This option is used to force it to return 
-a scalar (when set to true) or a list (when set to false).
+C<aggregate> controls how the function returns the content of the files 
+that were successfully read. By default, When set to true (default), 
+the function returns the content as a scalar; when set to false, the 
+content is returned as a list.
 
 =item *
 
@@ -101,6 +103,10 @@ Just read a file:
 
     my $file = read_file($path);
 
+Read a file, returning it as list:
+
+    my @file = read_file({ aggregate => 0 }, $path);
+
 Read a file, skipping comments:
 
     my $file = read_file({ skip_comments => 1 }, $path);
@@ -111,12 +117,13 @@ Read several files, skipping blank lines and comments:
 
 =item B<read_files()>
 
-<read_files()> is just an alias for C<read_file()> so that it look more 
+C<read_files()> is just an alias for C<read_file()> so that it look more 
 sane when reading several files. 
 
 =cut
 
 my %defaults = (
+    aggregate       => 1, 
     err_mode        => 'croak', 
     skip_comments   => 0, 
     skip_blanks     => 0, 
@@ -170,7 +177,7 @@ sub read_file {
         # first, read the file
         if ($opts{as_root}) {    # ... as root
             my $redir = $opts{err_mode} eq 'quiet' ? '2>&1' : '';
-            @lines = split $/, `sudo cat $path $redir`;
+            @lines = `sudo cat $path $redir`;
 
             if ($?) {
                 if (not -f $path) {
@@ -198,17 +205,11 @@ sub read_file {
             @lines = grep { ! /^\s*#/ } @lines  if $opts{skip_comments};
         }
 
-        push @files, join '', @lines;
+        push @files, $opts{aggregate} ? join('', @lines) : @lines;
     }
 
     # how to return the content(s)?
-    $opts{aggregate} = !wantarray unless exists $opts{aggregate};
-
-    if($opts{aggregate}) {
-        return join '', @files 
-    } else {
-        return @files
-    }
+    return wantarray ? @files : join '', @files
 }
 
 =back
@@ -267,8 +268,6 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=File-Read>
 L<http://search.cpan.org/dist/File-Read>
 
 =back
-
-=head1 ACKNOWLEDGEMENTS
 
 =head1 COPYRIGHT & LICENSE
 

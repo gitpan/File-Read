@@ -92,6 +92,12 @@ my @many_results_tests = (
                       File::Spec->catfile(qw(t samples space)) ], 
         expected => [ '', $/, ' ' ], 
     }, 
+    {
+        args     => [ { aggregate => 0 }, File::Spec->catfile(qw(t samples jerkcity2630)) ], 
+        expected => [ "DEUCE: PLEASE DO THESE STEPS IN THE FOLLOWING ORDERS:\n", 
+                      "DEUCE: 1. SHUT UP\n", 
+                      "DEUCE: 2. GET THE FUCK OUT\n" ]
+    }, 
 );
 
 

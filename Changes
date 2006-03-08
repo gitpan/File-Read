@@ -1,5 +1,11 @@
 Revision history for File-Read
 
+0.02    2006.02.08
+        [BUGFIX] Fixed a problem when reading files as root.
+        [API] Changed the semantic of the aggregate option for a more 
+        useful one.
+        [DOC] Fixed a few pod typos.
+
 0.01    2006.02.03
         First version, released on an unsuspecting world.
 
