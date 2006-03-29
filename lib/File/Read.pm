@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.02';
+    $VERSION = '0.04';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.02
+Version 0.04
 
 =head1 SYNOPSIS
 
@@ -42,6 +42,15 @@ Version 0.02
 This module mainly proposes functions for reading one or more files, 
 with different options. See below for more details and examples.
 
+=head2 Rationale
+
+This module was created to address a quite specific need: reading many 
+files, some as a normal user and others as root, and eventually do a 
+little more processing, all while being at the same time compatible 
+with Perl 5.004. C<File::Slurp> addresses the first point, but not the 
+others, hence the creation of C<File::Read>. If you don't need reading 
+files as root or the post-processing features, then it's faster to 
+directly use C<File::Slurp>.
 
 =head1 EXPORT
 
@@ -181,9 +190,9 @@ sub read_file {
 
             if ($?) {
                 if (not -f $path) {
-                    $! = eval q{ use Errno ':POSIX'; ENOENT } ||  2
+                    $! = eval { require Errno; Errno->import(":POSIX"); ENOENT() } ||  2
                 } elsif (not -r $path) {
-                    $! = eval q{ use Errno ':POSIX'; EACCES } || 13
+                    $! = eval { require Errno; Errno->import(":POSIX"); EACCES() } || 13
                 } else {
                     $! = 1024
                 }
@@ -229,6 +238,12 @@ B<(E)> You called a function without giving it argument.
 
 =back
 
+=head1 SEE ALSO
+
+L<File::Slurp>
+
+L<IO::All>
+
 =head1 AUTHOR
 
 Sébastien Aperghis-Tramoni, C<< <sebastien at aperghis.net> >>
@@ -251,20 +266,24 @@ You can also look for information at:
 
 =over 4
 
-=item * AnnoCPAN: Annotated CPAN documentation
+=item *
 
+AnnoCPAN: Annotated CPAN documentation -
 L<http://annocpan.org/dist/File-Read>
 
-=item * CPAN Ratings
+=item *
 
+CPAN Ratings -
 L<http://cpanratings.perl.org/d/File-Read>
 
-=item * RT: CPAN's request tracker
+=item *
 
+RT: CPAN's request tracker -
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=File-Read>
 
-=item * Search CPAN
+=item *
 
+Search CPAN -
 L<http://search.cpan.org/dist/File-Read>
 
 =back

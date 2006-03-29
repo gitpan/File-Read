@@ -1,14 +1,8 @@
----
+--- #YAML:1.0
 name: File-Read
-version: 0.02
+version: 0.04
 author:
-  - 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>'
+  - Sébastien Aperghis-Tramoni <sebastien@aperghis.net>
 abstract: Unique interface for reading one or more files
 license: perl
-build_requires:
-  Test::More: 0
-provides:
-  File::Read:
-    file: lib/File/Read.pm
-    version: 0.02
-generated_by: Module::Build version 0.2611
+generated_by: Module::Build version 0.2612, without YAML.pm

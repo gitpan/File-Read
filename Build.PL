@@ -7,7 +7,8 @@ my $builder = Module::Build->new(
     dist_author         => 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>',
     dist_version_from   => 'lib/File/Read.pm',
     build_requires => {
-        'Test::More' => 0,
+        'File::Slurp'   => 0,
+        'Test::More'    => 0,
     },
     add_to_cleanup      => [ 'File-Read-*' ],
 );
