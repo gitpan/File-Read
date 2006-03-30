@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.05';
+    $VERSION = '0.0501';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.05
+Version 0.0501
 
 =head1 SYNOPSIS
 

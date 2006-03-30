@@ -16,6 +16,7 @@ t/samples/empty
 t/samples/hello
 t/samples/hello-world
 t/samples/jerkcity2630
+t/samples/latin1
 t/samples/newline
 t/samples/pi
 t/samples/space

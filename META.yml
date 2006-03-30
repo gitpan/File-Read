@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name: File-Read
-version: 0.05
+version: 0.0501
 author:
   - Sébastien Aperghis-Tramoni <sebastien@aperghis.net>
 abstract: Unique interface for reading one or more files

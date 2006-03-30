@@ -1,5 +1,8 @@
 Revision history for File-Read
 
+0.0501  2005.03.30  (SAPER)
+        [DIST] Updated MANIFEST..
+
 0.05    2005.03.30  (SAPER)
         [FEATURE] Added new filter: to_ascii.
 
