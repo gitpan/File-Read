@@ -4,6 +4,8 @@ use File::Read;
 use File::Spec;
 use Test::More;
 
+my $has_unidecode = defined $Text::Unidecode::VERSION;
+
 # describe the tests
 my @one_result_tests = (
     {
@@ -75,6 +77,16 @@ my @one_result_tests = (
                       File::Spec->catfile(qw(t samples config)) ], 
         expected => "debug = 1\n" .
                     "verbose = 1\n",
+    }, 
+    {
+        args     => [ { to_ascii => 1 }, File::Spec->catfile(qw(t samples latin1)) ], 
+        expected => $has_unidecode ?    # Text::Unidecode is available
+                    "agrave:a  aelig:ae  eacute:e  szlig:ss  eth:d   thorn:th   mu:u\n" .
+                    "pound:PS   laquo:<<  raquo:>>   sect:SS   para:P  middot:*\n"
+                    : # Text::Unidecode isn't available, non ASCII chars should be deleted
+                    "agrave:  aelig:  eacute:  szlig:  eth:   thorn:   mu:\n" .
+                    "pound:   laquo:  raquo:   sect:   para:  middot:\n"
+                    ,
     }, 
 );
 

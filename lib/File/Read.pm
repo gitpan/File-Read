@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.04';
+    $VERSION = '0.05';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =head1 SYNOPSIS
 
@@ -86,7 +86,8 @@ content is returned as a list.
 =item *
 
 C<as_root> tells the function to read the given file(s) as root using 
-B<sudo(8)> and B<cat(1)>.
+B<sudo(8)> and B<cat(1)>. You therefore need to edit F<sudoers(5)> in 
+order to allow the user to execute B<cat(1)>.
 
 =item *
 
@@ -103,6 +104,12 @@ the read files.
 
 C<skip_blanks> tells the functions to remove all blank lines from 
 the read files. 
+
+=item *
+
+C<to_ascii> tells the functions to convert the text to US-ASCII using
+C<Text::Unidecode>. If this module is not available, non-ASCII data 
+are deleted.
 
 =back
 
@@ -136,6 +143,7 @@ my %defaults = (
     err_mode        => 'croak', 
     skip_comments   => 0, 
     skip_blanks     => 0, 
+    to_ascii        => 0, 
 );
 
 sub import {
@@ -186,7 +194,7 @@ sub read_file {
         # first, read the file
         if ($opts{as_root}) {    # ... as root
             my $redir = $opts{err_mode} eq 'quiet' ? '2>&1' : '';
-            @lines = `sudo cat $path $redir`;
+            @lines = `sudo /bin/cat $path $redir`;
 
             if ($?) {
                 if (not -f $path) {
@@ -212,6 +220,7 @@ sub read_file {
             # ... then do some filtering work if asked so
             @lines = grep { ! /^$/    } @lines  if $opts{skip_blanks};
             @lines = grep { ! /^\s*#/ } @lines  if $opts{skip_comments};
+            @lines = map { _to_ascii($_) } @lines  if $opts{to_ascii};
         }
 
         push @files, $opts{aggregate} ? join('', @lines) : @lines;
@@ -219,6 +228,21 @@ sub read_file {
 
     # how to return the content(s)?
     return wantarray ? @files : join '', @files
+}
+
+
+my $has_unidecode = eval 'require Text::Unidecode; 1';
+
+sub _to_ascii {
+    # use Text::Unidecode if available
+    if($has_unidecode) {
+        return Text::Unidecode::unidecode(@_)
+
+    } else { # use a simple s///
+        my @text = @_;
+        map { s/[\x80-\xff]//g } @text;
+        return @text
+    }
 }
 
 =back
