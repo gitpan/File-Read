@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.0501';
+    $VERSION = '0.06';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.0501
+Version 0.06
 
 =head1 SYNOPSIS
 
@@ -240,7 +240,7 @@ sub _to_ascii {
 
     } else { # use a simple s///
         my @text = @_;
-        map { s/[\x80-\xff]//g } @text;
+        map { s/[^\x00-\x7f]//g } @text;
         return @text
     }
 }

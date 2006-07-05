@@ -1,8 +1,12 @@
---- #YAML:1.0
-name: File-Read
-version: 0.0501
-author:
-  - Sébastien Aperghis-Tramoni <sebastien@aperghis.net>
-abstract: Unique interface for reading one or more files
-license: perl
-generated_by: Module::Build version 0.2612, without YAML.pm
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         File-Read
+version:      0.06
+version_from: lib/File/Read.pm
+installdirs:  site
+requires:
+    File::Slurp:                   0
+    Test::More:                    0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.30

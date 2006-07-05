@@ -1,5 +1,8 @@
 Revision history for File-Read
 
+0.06    2006.07.05  (SAPER)
+        [CODE] _to_ascii(): Improved the substitution.
+
 0.0501  2005.03.30  (SAPER)
         [DIST] Updated MANIFEST..
 
