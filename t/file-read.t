@@ -166,8 +166,8 @@ for my $test (@one_result_root_tests) {
     # on the same line.
     eval {
         SKIP: {
-            skip "sudo (usually needs interactive password)", 2 
-                if exists $test->{args}{as_root} and $ENV{AUTOMATED_TESTING};
+            skip "no such file", 2 unless -f $test->{args}[1];
+            skip "sudo (usually needs interactive password)", 2 if $ENV{AUTOMATED_TESTING};
 
             my $file = eval { read_file( @{$test->{args}} ) };
             is( $@, '', "calling read_file() with args: $args_str" );

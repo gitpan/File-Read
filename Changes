@@ -1,5 +1,8 @@
 Revision history for File-Read
 
+0.0601  2006.07.22  (SAPER)
+        [TESTS] Fixed t/file-read.t so it skips when file doesn't exist.
+
 0.06    2006.07.05  (SAPER)
         [CODE] _to_ascii(): Improved the substitution.
 

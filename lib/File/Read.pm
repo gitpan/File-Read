@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.06';
+    $VERSION = '0.0601';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
