@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.0601';
+    $VERSION = '0.0602';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -251,12 +251,12 @@ sub _to_ascii {
 
 =over
 
-=item Bad value '%s' for option '%s'
+=item C<Bad value '%s' for option '%s'>
 
 B<(E)> You gave a bad value for the indicated option. Please check the 
 documentation for the valid values. 
 
-=item This function needs at least one path
+=item C<This function needs at least one path>
 
 B<(E)> You called a function without giving it argument.
 

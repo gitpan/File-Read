@@ -1,5 +1,9 @@
 Revision history for File-Read
 
+0.0602  2006.10.13  (SAPER)
+        [DIST] Added example eg/read_hosts.pl
+        [DOC] Small Pod changes.
+
 0.0601  2006.07.22  (SAPER)
         [TESTS] Fixed t/file-read.t so it skips when file doesn't exist.
 

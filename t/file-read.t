@@ -153,7 +153,8 @@ for my $test (@one_result_tests) {
     is( $@, '', "calling read_file() with args: $args_str" );
     is( $file, $test->{expected}, "checking result" );
 }
-;
+
+
 # read files as root, returning one result
 for my $test (@one_result_root_tests) {
     (eval { Dumper($test->{args}) } || '') =~ /\[(.+)\];$/;
@@ -180,6 +181,7 @@ for my $test (@one_result_root_tests) {
         pass(); pass();
     }
 }
+
 
 # read files, returning several results
 for my $test (@many_results_tests) {
