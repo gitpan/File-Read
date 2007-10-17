@@ -1,10 +1,10 @@
 use strict;
 eval 'use warnings';
-use File::Read;
+use Cwd qw(abs_path);
 use File::Spec;
 use Test::More;
 
-my $has_unidecode = defined $Text::Unidecode::VERSION;
+my $has_unidecode = eval "use Text::Unidecode; 1";
 
 # describe the tests
 my @one_result_tests = (
@@ -83,17 +83,15 @@ my @one_result_tests = (
         expected => $has_unidecode ?    # Text::Unidecode is available
                     "agrave:a  aelig:ae  eacute:e  szlig:ss  eth:d   thorn:th   mu:u\n" .
                     "pound:PS   laquo:<<  raquo:>>   sect:SS   para:P  middot:*\n"
-                    : # Text::Unidecode isn't available, non ASCII chars should be deleted
+                    : # Text::Unidecode isn't available, non-ASCII chars should be deleted
                     "agrave:  aelig:  eacute:  szlig:  eth:   thorn:   mu:\n" .
                     "pound:   laquo:  raquo:   sect:   para:  middot:\n"
                     ,
     }, 
-);
-
-my @one_result_root_tests = (
     {
         args     => [ { as_root => 1 }, 
-                      File::Spec->catfile(File::Spec->rootdir, qw(etc shadow)) ], 
+                      File::Spec->catfile(qw(t samples hello)) ], 
+        expected => "ROOT:Hello",
     }, 
 );
 
@@ -113,12 +111,21 @@ my @many_results_tests = (
 );
 
 
-# "I love it when a plan comes together"
-plan tests => 5 + @one_result_tests * 2 + @one_result_root_tests * 2 + @many_results_tests * 3;
+# determine the path of the current perl(1)
+my $perl = abs_path($^X);
+$perl = qq{"$perl"} if $perl =~ m/\s/;
 
+# "I love it when a plan comes together"
+plan tests => 7 + @one_result_tests * 2 + @many_results_tests * 3;
+
+# load File::Read
+use_ok( "File::Read", "cmd=$perl -pe s/^/ROOT:/" );
 
 # check that the advertised functions are present
 can_ok( 'File::Read' => qw(read_file read_files) );
+
+# check that the exported functions are available in the current package
+can_ok( __PACKAGE__, qw(read_file read_files) );
 
 
 # check diagnostics
@@ -153,35 +160,6 @@ for my $test (@one_result_tests) {
     is( $@, '', "calling read_file() with args: $args_str" );
     is( $file, $test->{expected}, "checking result" );
 }
-
-
-# read files as root, returning one result
-for my $test (@one_result_root_tests) {
-    (eval { Dumper($test->{args}) } || '') =~ /\[(.+)\];$/;
-    my $args_str = $1 || "@{$test->{args}}";
-
-    # I don't know why, but Perl 5.005_04 chokes on the "SKIP:" line 
-    # with the error "Not a HASH reference". Fortunately, it's trappable 
-    # so we just eval{} it.
-    # Perl 5.8 also produces a warning "Pseudo-hashes are deprecated" 
-    # on the same line.
-    eval {
-        SKIP: {
-            skip "no such file", 2 unless -f $test->{args}[1];
-            skip "sudo (usually needs interactive password)", 2 if $ENV{AUTOMATED_TESTING};
-
-            my $file = eval { read_file( @{$test->{args}} ) };
-            is( $@, '', "calling read_file() with args: $args_str" );
-            cmp_ok( length $file, '>=', 0, "checking result" );
-        }
-    };
-    if($@) {
-        # something happened, preventing the previous block to 
-        # execute, so we just skip these tests by OK'ing them
-        pass(); pass();
-    }
-}
-
 
 # read files, returning several results
 for my $test (@many_results_tests) {

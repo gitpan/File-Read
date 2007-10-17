@@ -1,6 +1,6 @@
 ---
 name: File-Read
-version: 0.0602
+version: 0.07
 author:
   - 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>'
 abstract: Unique interface for reading one or more files
@@ -13,8 +13,8 @@ build_requires:
 provides:
   File::Read:
     file: lib/File/Read.pm
-    version: 0.0602
-generated_by: Module::Build version 0.2805
+    version: 0.07
+generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

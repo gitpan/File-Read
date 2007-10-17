@@ -1,5 +1,12 @@
 Revision history for File-Read
 
+0.07    2007.10.17  (SAPER)
+        [FEATURE] Option "cmd" to set the command used to read files as root.
+        [TESTS] Removed the clunky tests for "as_root" as the "cmd" option 
+        allows for easy mocking.
+        [TESTS] t/file-read.t also tests if the functions are actually exported.
+        [DIST] eg/read_hosts.pl really present now.
+
 0.0602  2006.10.13  (SAPER)
         [DIST] Added example eg/read_hosts.pl
         [DOC] Small Pod changes.

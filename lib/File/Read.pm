@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.0602';
+    $VERSION = '0.07';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =head1 SYNOPSIS
 
@@ -86,8 +86,13 @@ content is returned as a list.
 =item *
 
 C<as_root> tells the function to read the given file(s) as root using 
-B<sudo(8)> and B<cat(1)>. You therefore need to edit F<sudoers(5)> in 
-order to allow the user to execute B<cat(1)>.
+the command indicated by the C<cmd> option.
+
+=item *
+
+C<cmd> sets the shell command used for reading files as root. Default 
+is C<"sudo cat">. Therefore you need B<sudo(8)> and B<cat(1)> on your 
+system, and F<sudoers(5)> must be set so the user can execute B<cat(1)>.
 
 =item *
 
@@ -140,6 +145,7 @@ sane when reading several files.
 
 my %defaults = (
     aggregate       => 1, 
+    cmd             => "sudo cat",
     err_mode        => 'croak', 
     skip_comments   => 0, 
     skip_blanks     => 0, 
@@ -147,16 +153,16 @@ my %defaults = (
 );
 
 sub import {
-    my($module,@args) = @_;
+    my ($module, @args) = @_;
     my @new = ();
 
     # parse arguments
     for my $arg (@args) {
-        if(index($arg, '=') >= 0) {
-            my($opt,$val) = split('=', $arg);
+        if (index($arg, '=') >= 0) {
+            my ($opt, $val) = split '=', $arg;
             $defaults{$opt} = $val if exists $defaults{$opt};
-
-        } else {
+        }
+        else {
             push @new, $arg
         }
     }
@@ -192,22 +198,24 @@ sub read_file {
         my $error = '';
         
         # first, read the file
-        if ($opts{as_root}) {    # ... as root
+        if ($opts{as_root}) {   # ... as root
             my $redir = $opts{err_mode} eq 'quiet' ? '2>&1' : '';
-            @lines = `sudo /bin/cat $path $redir`;
+            @lines = `$opts{cmd} $path $redir`;
 
             if ($?) {
                 if (not -f $path) {
                     $! = eval { require Errno; Errno->import(":POSIX"); ENOENT() } ||  2
-                } elsif (not -r $path) {
+                }
+                elsif (not -r $path) {
                     $! = eval { require Errno; Errno->import(":POSIX"); EACCES() } || 13
-                } else {
+                }
+                else {
                     $! = 1024
                 }
                 ($error = "$!") =~ s/ 1024//;
             }
-
-        } else {                # ... as a normal user
+        }
+        else {                  # ... as a normal user
             @lines = eval { File::Slurp::read_file($path) };
             $error = $@;
         }
@@ -235,10 +243,10 @@ my $has_unidecode = eval 'require Text::Unidecode; 1';
 
 sub _to_ascii {
     # use Text::Unidecode if available
-    if($has_unidecode) {
+    if ($has_unidecode) {
         return Text::Unidecode::unidecode(@_)
-
-    } else { # use a simple s///
+    }
+    else { # use a simple s///
         my @text = @_;
         map { s/[^\x00-\x7f]//g } @text;
         return @text
