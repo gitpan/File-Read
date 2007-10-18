@@ -1,5 +1,9 @@
 Revision history for File-Read
 
+0.0801  2007.10.19  (SAPER)
+        [DIST] CPAN-RT#30104: Converted the few accented characters to UTF-8 
+        (Damyan Ivanov).
+
 0.0800  2007.10.18  (SAPER)
         [BUGFIX] Don't use Text::Unidecode on 5.6 because it doesn't really
         work. Thanks to Andreas Koenig for finding this bug.

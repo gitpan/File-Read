@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.0800';
+    $VERSION = '0.0801';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.0800
+Version 0.0801
 
 =head1 SYNOPSIS
 
@@ -279,7 +279,7 @@ L<IO::All>
 
 =head1 AUTHOR
 
-Sébastien Aperghis-Tramoni, C<< <sebastien at aperghis.net> >>
+SE<eacute>bastien Aperghis-Tramoni, C<< <sebastien at aperghis.net> >>
 
 =head1 BUGS
 
@@ -323,7 +323,7 @@ L<http://search.cpan.org/dist/File-Read>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Sébastien Aperghis-Tramoni, all rights reserved.
+Copyright (C) 2006, 2007 SE<eacute>bastien Aperghis-Tramoni, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

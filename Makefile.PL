@@ -5,7 +5,7 @@ eval 'use ExtUtils::MakeMaker::Coverage';
 WriteMakefile(
     NAME                => 'File::Read',
     LICENSE             => 'perl',
-    AUTHOR              => 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>',
+    AUTHOR              => 'SÃ©bastien Aperghis-Tramoni <sebastien@aperghis.net>',
     VERSION_FROM        => 'lib/File/Read.pm',
     ABSTRACT_FROM       => 'lib/File/Read.pm',
     PL_FILES            => {},
