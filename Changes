@@ -1,5 +1,12 @@
 Revision history for File-Read
 
+0.0800  2007.10.18  (SAPER)
+        [BUGFIX] Don't use Text::Unidecode on 5.6 because it doesn't really
+        work. Thanks to Andreas Koenig for finding this bug.
+        [TESTS] Fixed for passing again under Perl 5.5 and 5.4
+        [DIST] Have to change the version to 4 digits because packaging tools
+        are plain stupid.
+
 0.07    2007.10.17  (SAPER)
         [FEATURE] Option "cmd" to set the command used to read files as root.
         [TESTS] Removed the clunky tests for "as_root" as the "cmd" option 

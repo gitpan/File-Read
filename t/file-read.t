@@ -4,7 +4,7 @@ use Cwd qw(abs_path);
 use File::Spec;
 use Test::More;
 
-my $has_unidecode = eval "use Text::Unidecode; 1";
+my $has_unidecode = eval "require 5.008; require Text::Unidecode; 1";
 
 # describe the tests
 my @one_result_tests = (
@@ -112,7 +112,7 @@ my @many_results_tests = (
 
 
 # determine the path of the current perl(1)
-my $perl = abs_path($^X);
+my $perl = abs_path($^X) || $^X;
 $perl = qq{"$perl"} if $perl =~ m/\s/;
 
 # "I love it when a plan comes together"

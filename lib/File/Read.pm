@@ -5,7 +5,7 @@ use File::Slurp ();
 require Exporter;
 
 {   no strict;
-    $VERSION = '0.07';
+    $VERSION = '0.0800';
     @ISA = qw(Exporter);
     @EXPORT = qw(read_file read_files);
 }
@@ -18,7 +18,7 @@ File::Read - Unique interface for reading one or more files
 
 =head1 VERSION
 
-Version 0.07
+Version 0.0800
 
 =head1 SYNOPSIS
 
@@ -239,7 +239,8 @@ sub read_file {
 }
 
 
-my $has_unidecode = eval 'require Text::Unidecode; 1';
+# Text::Unidecode doesn't work on Perl 5.6
+my $has_unidecode = eval "require 5.008; require Text::Unidecode; 1"; $@ = "";
 
 sub _to_ascii {
     # use Text::Unidecode if available
